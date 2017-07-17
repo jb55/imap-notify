@@ -4,6 +4,8 @@
 
   Connects to an IMAP server and runs a command when new mail is received
 
+  Not a library yet, sorry.
+
 ## Installation
 
   Install with npm
