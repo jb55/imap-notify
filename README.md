@@ -9,3 +9,11 @@
   Install with npm
 
     $ npm install -g jb55/imap-notify 
+
+## Usage
+
+    $ imap-notify USER PASS CMD [HOST] [PORT]
+
+  env vars
+
+    IMAP_ALLOW_UNAUTHORIZED=1   # disable cert checking 
