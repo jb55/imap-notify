@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "imap-notify";
-    homepage = "https://github.com/jb55/gmail-notify";
+    homepage = "https://github.com/jb55/imap-notify";
     maintainers = with maintainers; [ jb55 ];
     license = licenses.mit;
   };

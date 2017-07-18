@@ -20,6 +20,8 @@ if (!user || !pass || !cmd) {
   usage();
 }
 
+var hadFirst = false;
+
 const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow}, () => {
   function handleNotifications() {
     socket.on("data", (data) => {
@@ -27,9 +29,12 @@ const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow},
       console.error(str)
 
       const res = /\* (\d+) EXISTS/.exec(str);
-      if (res && res[1]) {
+
+      if (hadFirst && res && res[1]) {
         execFile(cmd, [res[1]])
       }
+
+      if (!hadFirst) hadFirst = true;
     })
   }
 
@@ -40,6 +45,4 @@ const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow},
   handleNotifications()
 
   socket.on("close", () => process.exit(2))
-
-  setInterval(socket.write.bind(null, "A002 IDLE\r\n"), 300000)
 })
