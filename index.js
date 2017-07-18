@@ -10,6 +10,7 @@ const cmd    = args[4] || process.env.IMAP_NOTIFY_CMD
 const host   = args[5] || process.env.IMAP_NOTIFY_HOST || "imap.gmail.com"
 const port   = args[6] || process.env.IMAP_NOTIFY_PORT || 993
 const allow = process.env.IMAP_ALLOW_UNAUTHORIZED == null? false : !!process.env.IMAP_ALLOW_UNAUTHORIZED
+const timeout  = process.env.IMAP_IDLE_TIMEOUT || 300000; // 5 mins
 
 function usage() {
   console.error("usage: imap-notify USER PASS CMD [HOST] [PORT]")
@@ -39,11 +40,13 @@ const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow},
     })
   }
 
-  socket.write(`tag login ${user} ${pass}\r\n`)
-  socket.write("A001 SELECT INBOX\r\n")
-  socket.write("A002 IDLE\r\n")
+  socket.write(`tag login ${user} ${pass}\r\ntag SELECT INBOX\r\ntag IDLE\r\n`)
 
   handleNotifications()
+
+  setInterval(() => {
+    socket.write("DONE\r\ntag IDLE\r\n");
+  }, timeout);
 
   socket.on("close", () => process.exit(2))
 })
