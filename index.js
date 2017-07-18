@@ -20,7 +20,7 @@ if (!user || !pass || !cmd) {
   usage();
 }
 
-var hadFirst = false;
+var ready = false;
 
 const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow}, () => {
   function handleNotifications() {
@@ -30,11 +30,12 @@ const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow},
 
       const res = /\* (\d+) EXISTS/.exec(str);
 
-      if (hadFirst && res && res[1]) {
+      if (ready && res && res[1]) {
         execFile(cmd, [res[1]])
       }
 
-      if (!hadFirst) hadFirst = true;
+      if (/\+ idling/.test(str))
+        ready = true;
     })
   }
 
