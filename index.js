@@ -9,6 +9,7 @@ const pass   = args[3] || process.env.IMAP_NOTIFY_PASS
 const cmd    = args[4] || process.env.IMAP_NOTIFY_CMD
 const host   = args[5] || process.env.IMAP_NOTIFY_HOST || "imap.gmail.com"
 const port   = args[6] || process.env.IMAP_NOTIFY_PORT || 993
+const use_tls    = (args[7] || process.env.IMAP_NOTIFY_TLS || 'yes') === 'yes'
 const allow = process.env.IMAP_ALLOW_UNAUTHORIZED == null? false : !!process.env.IMAP_ALLOW_UNAUTHORIZED
 const timeout  = process.env.IMAP_IDLE_TIMEOUT || 300000; // 5 mins
 const verbose  = !!process.env.IMAP_VERBOSE;
@@ -24,7 +25,9 @@ if (!user || !pass || !cmd) {
 
 var ready = false;
 
-const socket = tls.connect({host: host, port: port, rejectUnauthorized: !allow}, () => {
+const net = use_tls ? require('tls') : require('net')
+
+const socket = net.connect({host: host, port: port, rejectUnauthorized: !allow}, () => {
   function handleNotifications() {
     socket.on("data", (data) => {
       var str = data.toString();
