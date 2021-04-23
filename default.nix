@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "imap-notify-${version}";
-  version = "0.1";
+  version = "0.1.1";
 
   src = ./.;
 

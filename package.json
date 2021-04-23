@@ -1,7 +1,7 @@
 {
   "name": "imap-notify",
   "description": "minimal imap notifier, run a command when mail is received",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "url": "https://github.com/jb55/imap-notify"
   },
