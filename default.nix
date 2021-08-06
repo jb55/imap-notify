@@ -1,7 +1,7 @@
-{ stdenv, makeWrapper, nodejs }:
+{ stdenv, lib, makeWrapper, nodejs }:
 
 stdenv.mkDerivation rec {
-  name = "imap-notify-${version}";
+  pname = "imap-notify";
   version = "0.1.1";
 
   src = ./.;
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
       --prefix PATH : "${nodejs}/bin"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "imap-notify";
     homepage = "https://github.com/jb55/imap-notify";
     maintainers = with maintainers; [ jb55 ];
